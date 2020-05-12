@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.lara.rnn.Server;
 
 public class ChatFrameCtrl extends Main {
@@ -28,6 +29,9 @@ public class ChatFrameCtrl extends Main {
 
     @FXML
     private Button buttonAntoine;
+    
+    @FXML
+    private Button exitButton;
 
     @FXML
     private TextField messageInput;
@@ -92,4 +96,11 @@ public class ChatFrameCtrl extends Main {
         messageInput.requestFocus();
     }
 
+	@FXML
+    void exitLara(ActionEvent event) {
+    	Stage stage = (Stage) exitButton.getScene().getWindow();
+        if (!(server == null))
+        	server.shutdownServer();
+        stage.close();
+    }
 }

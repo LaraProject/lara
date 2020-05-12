@@ -22,6 +22,7 @@
                   <Button fx:id="buttonAnna" layoutX="82.0" layoutY="318.0" mnemonicParsing="false" onAction="#idAnna" text="Parler avec Anna" AnchorPane.bottomAnchor="255.0" />
                   <Button fx:id="buttonRiad" layoutX="84.0" layoutY="385.0" mnemonicParsing="false" onAction="#idRiad" text="Parler avec Riad" AnchorPane.bottomAnchor="190.0" />
                   <Button fx:id="buttonAntoine" layoutX="74.0" layoutY="458.0" mnemonicParsing="false" onAction="#idAntoine" text="Parler avec Antoine" AnchorPane.bottomAnchor="115.0" />
+                  <Button fx:id="exitButton" layoutX="22.0" layoutY="553.0" mnemonicParsing="false" onAction="#exitLara" text="Quitter LARA..." AnchorPane.bottomAnchor="20.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
