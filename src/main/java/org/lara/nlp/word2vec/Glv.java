@@ -1,14 +1,18 @@
-package org.lara.nlp.dl4j;
+package org.lara.nlp.word2vec;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.glove.Glove;
+import org.deeplearning4j.models.word2vec.VocabWord;
 import org.deeplearning4j.text.sentenceiterator.BasicLineIterator;
 import org.deeplearning4j.text.sentenceiterator.CollectionSentenceIterator;
 import org.deeplearning4j.text.sentenceiterator.SentenceIterator;
 import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
-import java.util.ArrayList;
+import org.nd4j.linalg.factory.Nd4j;
 
 public class Glv {
 	// Structure
@@ -37,11 +41,6 @@ public class Glv {
 	// Output to a file
 	public void write_vectors(String path) throws Exception {
 		WordVectorSerializer.writeWordVectors(glove, path);
-	}
-
-	// Get the cosine similarity
-	public double similarity(String word1, String word2) {
-		return glove.similarity(word1, word2);
 	}
 
 	// Export the model

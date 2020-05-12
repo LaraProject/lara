@@ -1,0 +1,6 @@
+target/
+venv/
+python/__pycache__
+src/main/java/org/lara/rnn/Message.java
+python/message_pb2.py
+models/

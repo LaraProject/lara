@@ -1,14 +1,35 @@
-package org.lara.nlp;
+package org.lara.nlp.context;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
 
-abstract class Context {
+public abstract class Context {
 	public ArrayList<String> questions;
 	public ArrayList<String> answers;
+	private Processer process;
+
 	public abstract void init();
+	// Limits
+	public int min_length;
+	public int max_length;
+
+	// Filter by length
+	public void tokenize() {
+		process.tokenize();
+		this.questions = process.questions;
+		this.answers = process.answers;
+	}
+	// Execute the cleaning
+	public void cleaning() {
+		process = new Processer(questions, answers, min_length, max_length);
+		process.process();
+		this.questions = process.questions;
+		this.answers = process.answers;
+	}
 
 	// Save the questions and answers
 	public void save(String path_questions, String path_answers) throws Exception {
@@ -50,5 +71,17 @@ abstract class Context {
 			System.err.format("Exception occurred trying to read '%s'.", path_answers);
 			e.printStackTrace();
 		}
+	}
+
+	// Output the data in clean form
+	public void exportData(String path) throws Exception {
+		FileWriter file_out = new FileWriter(path);
+		Iterator<String> it_questions = questions.iterator();
+		Iterator<String> it_answers = answers.iterator();
+		while (it_questions.hasNext()) {
+			file_out.write("Question : " + it_questions.next() + "\n");
+			file_out.write("Answer : " + it_answers.next() + "\n");
+		}
+		file_out.close();
 	}
 }

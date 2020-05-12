@@ -1,0 +1,16 @@
+option java_package = "org.lara.rnn";
+
+message Command {
+
+  enum CommandType {
+    SWITCH_PERSON = 0;
+    ANSWER = 1;
+    QUESTION = 2;
+    SHUTDOWN = 3;
+  }
+
+  required CommandType type = 1;
+  required string name = 2;
+  required string data = 3;
+}
+

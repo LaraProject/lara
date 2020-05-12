@@ -1,5 +1,10 @@
-package org.lara.nlp.dl4j;
+package org.lara.nlp.word2vec;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
 import org.deeplearning4j.models.embeddings.WeightLookupTable;
 import org.deeplearning4j.models.embeddings.inmemory.InMemoryLookupTable;
 import org.deeplearning4j.models.embeddings.learning.impl.elements.SkipGram;
@@ -7,8 +12,9 @@ import org.deeplearning4j.models.embeddings.loader.VectorsConfiguration;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.sequencevectors.SequenceVectors;
 import org.deeplearning4j.models.sequencevectors.iterators.AbstractSequenceIterator;
-import org.deeplearning4j.models.sequencevectors.transformers.impl.SentenceTransformer;
 import org.deeplearning4j.models.sequencevectors.serialization.VocabWordFactory;
+import org.deeplearning4j.models.sequencevectors.transformers.impl.SentenceTransformer;
+import org.deeplearning4j.models.word2vec.VocabWord;
 import org.deeplearning4j.models.word2vec.VocabWord;
 import org.deeplearning4j.models.word2vec.wordstore.VocabConstructor;
 import org.deeplearning4j.models.word2vec.wordstore.inmemory.AbstractCache;
@@ -17,8 +23,7 @@ import org.deeplearning4j.text.sentenceiterator.SentenceIterator;
 import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
-import java.util.ArrayList;
-import java.io.File;
+import org.nd4j.linalg.factory.Nd4j;
 
 public class Sv {
 	// Structure
@@ -70,23 +75,18 @@ public class Sv {
 
 	// Load the model
 	public Sv(String path) throws Exception {
-		vectors = WordVectorSerializer.readSequenceVectors(new VocabWordFactory(), new File(path));
-
+		vectors = WordVectorSerializer.readSequenceVectors(path, true);
 	}
 
 	// Save the model
 	public void save_model(String path) throws Exception {
-		WordVectorSerializer.writeSequenceVectors(vectors, new VocabWordFactory(), path);
+		OutputStream out_file = new FileOutputStream(path);
+		WordVectorSerializer.writeSequenceVectors(vectors, out_file);
 	}
 
 	// Write vectors
 	public void write_vectors(String path) throws Exception {
 		save_model(path);
-	}
-
-	// Get the cosine similarity
-	public double similarity(String word1, String word2) {
-		return vectors.similarity(word1, word2);
 	}
 
 	// Export the model

@@ -1,7 +1,11 @@
-package org.lara.nlp.dl4j;
+package org.lara.nlp.word2vec;
 
-import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
+import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
+import org.deeplearning4j.models.word2vec.VocabWord;
 import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.deeplearning4j.text.sentenceiterator.CollectionSentenceIterator;
 import org.deeplearning4j.text.sentenceiterator.SentenceIterator;
@@ -9,15 +13,15 @@ import org.deeplearning4j.text.sentenceiterator.SentencePreProcessor;
 import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.CommonPreprocessor;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.DefaultTokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
-import java.util.ArrayList;
+import org.nd4j.linalg.factory.Nd4j;
 
 public class W2v {
 	// Structure
 	private Word2Vec vec;
 
 	// Constructor
-	public W2v(ArrayList<String> words, Integer minWordFrequency, Integer iterations, Integer epochs,
-		Integer dimension) {
+	public W2v(ArrayList<String> words, int minWordFrequency, int iterations, int epochs,
+		int dimension, double learningRate) {
 		// Iterator
 		SentenceIterator iter = new CollectionSentenceIterator(words);
 		// Split on white spaces in the line to get words
@@ -28,7 +32,8 @@ public class W2v {
 			.iterations(iterations)
 			.epochs(epochs)
 			.layerSize(dimension) // the number of features in the word vector
-			.seed(42)
+			.learningRate(learningRate)
+			.seed(40)
 			.windowSize(5) // rolling skip gram window size
 			.iterate(iter) // the input sentences
 			.tokenizerFactory(t) // the tokenizer
@@ -48,16 +53,12 @@ public class W2v {
 
 	// Save the model
 	public void save_model(String path) throws Exception {
-		vec = WordVectorSerializer.readWord2VecModel(path);
-	}
-
-	// Get the cosine similarity
-	public double similarity(String word1, String word2) {
-		return vec.similarity(word1, word2);
+		WordVectorSerializer.writeWord2VecModel(vec, path);
 	}
 
 	// Export the model
 	public Word2Vec getModel() {
 		return vec;
 	}
+
 }
