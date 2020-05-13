@@ -18,4 +18,4 @@ $(JAVA_OUT): $(SRC)
 
 clean:
 	$(RM) $(PYTHON_OUT)
-	$(RM) $(JAVA_OUT)
+	$(RM) src/main/java/org/lara/rnn/Message.java
