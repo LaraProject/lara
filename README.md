@@ -30,7 +30,7 @@ make
 ### Compilation
 Les bibliothèques nécessaires peuvent être installées via pip :
 ```
-pip install -r requierments.txt
+pip install -r requirments.txt
 ```
 ### Parser Facebook
 Le parser Facebook a été développé par Riad et permet de traiter les données de exporter de Facebook au format JSON. Les paramètres d'entrée sont *delayBetween2Conv*, *nbMessages* et *fbConvFilename* a définir en fin de fichier.
