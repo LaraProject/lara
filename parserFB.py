@@ -273,7 +273,7 @@ fbConvFilename = 'fb_benjamin.js'
 
 # ArgsList
 
-argslist = argparse.ArgumentParser(description="Faceboot data parser")
+argslist = argparse.ArgumentParser(description="Facebook data parser")
 
 argslist.add_argument('inputFile', metavar='inputFile', type=str, help='Path to input file containing facebook data')
 
