@@ -275,7 +275,9 @@ fbConvFilename = 'fb_benjamin.js'
 
 argslist = argparse.ArgumentParser(description="Faceboot data parser")
 
-argslist.add_argument('file', metavar='file', type=str, help='Path to file containing facebook data')
+argslist.add_argument('inputFile', metavar='inputFile', type=str, help='Path to input file containing facebook data')
+
+argslist.add_argument('outputFile', metavar='outputFile', type=str, help='Path to output file')
 
 argslist.add_argument('answerer', metavar='answerer', type=str, help='Who will answer your questions')
 
@@ -295,15 +297,28 @@ args = argslist.parse_args()
 
 # Settings
 
-delayBetween2Conv = args.delayBetween2Conv
-nbMessages = args.nbMessages
-debug = args.debug
-withTimestamp = args.withTimestamp
-answerer = args.answerer
-fbConvFilename = args.file
+if args.delayBetween2Conv:
+	delayBetween2Conv = args.delayBetween2Conv
+else:
+	delayBetween2Conv = 60 * 1000 * 20  # 20 mins of interval
+if args.nbMessages:
+	nbMessages = args.nbMessages
+else:
+	nbMessages = 100
+if args.debug:
+	debug = args.debug
+else:
+	debug = False
+if args.withTimestamp:
+	withTimestamp = args.withTimestamp
+else:
+	withTimestamp = False
 
+answerer = args.answerer
+fbConvFilename = args.inputFile
 
 # Parser launching...
 
 parser = Parser(fbConvFilename, nbMessages, delayBetween2Conv, answerer, withTimestamp, debug)
 parser.start()
+parser.finalDump(args.outputFile)
