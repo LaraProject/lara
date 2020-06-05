@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import emoji4j.EmojiUtils;
 
 class Processer {
 	// Structure
@@ -22,8 +23,7 @@ class Processer {
 	}
 
 	// Simplifying and cleaning the text using regex
-	private static String clean_text(String orig) {
-		String text = orig.toLowerCase();
+	private static String clean_english(String text) {
 		text = text.replaceAll("i'm", "i am");
 		text = text.replaceAll("he's", "he is");
 		text = text.replaceAll("she's", "she is");
@@ -42,16 +42,43 @@ class Processer {
 		text = text.replaceAll("n't", " not");
 		text = text.replaceAll("won't", "will not");
 		text = text.replaceAll("can't", "cannot");
+		return text;
+	}
+	private static String clean_html(String text) {
 		text = text.replaceAll("<u>","");
 		text = text.replaceAll("</u>", "");
 		text = text.replaceAll("<i>","");
 		text = text.replaceAll("</i>", "");
 		text = text.replaceAll("<b>","");
 		text = text.replaceAll("</b>", "");
-		text = text.replaceAll("[^\\x00-\\x7F]", "");
-		text = text.replaceAll("[\\p{Cntrl}&&[^\r\n\t]]", "");
-		text = text.replaceAll("\\p{C}", "");
-		text = text.replaceAll("[-()\"#/@;:<>{}`+=~|.!?,\']", "");
+		return text;
+	}
+	private static String clean_emoji(String text) {
+		return EmojiUtils.shortCodify(text);
+	}
+	private static String clean_text(String orig) {
+		// Convert to lower case
+		String text = orig.toLowerCase();
+		// Remove URLs
+		text = text.replaceAll("http?://\\S+\\s?", "");
+		text = text.replaceAll("https?://\\S+\\s?", "");
+		// Clean english
+		//text = clean_english(text);
+		// Remove HTML code
+		text = clean_html(text);
+		// Clean emojis
+		text = clean_emoji(text);
+		// Remove punctuation
+		text = text.replaceAll("[\\p{Punct}]&&[^'?!:^-]", "");
+		text = text.replaceAll("\\^\\^", ":eyebrows:");
+		text = text.replaceAll("([\\p{IsLatin}]*+):++([\\p{IsLatin}]++):++([\\p{IsLatin}]*+)", "$1 #" + "$2" + "# $3");
+		text = text.replaceAll("([\\p{IsLatin}]*+)([?!]++)([\\p{IsLatin}]*+)", "$1 $2 $3");
+		text = text.replaceAll("([\\p{IsLatin}]*+)[:^-]++([\\p{IsLatin}]*+)", "$1 $2");
+		text = text.replaceAll("#",":");
+		// Remove line terminators
+		text = text.replaceAll("\\r\\n|\\r|\\n", " ");
+		// Remove non-letters
+		//text = text.replaceAll("[^a-zA-Z ]", "")
 		return text;
 	}
 
@@ -59,52 +86,49 @@ class Processer {
 	private void cleanQuestionsAnswers() {
 		ArrayList<String> clean_questions = new ArrayList<String> ();
 		ArrayList<String> clean_answers = new ArrayList<String> ();
-		for (String q: questions)
-			clean_questions.add(clean_text(q));
-		for (String a: answers)
-			clean_answers.add(clean_text(a));
+		Iterator<String> it_questions = questions.iterator();
+		Iterator<String> it_answers = answers.iterator();
+		while (it_questions.hasNext() && it_answers.hasNext()) {
+			String question = it_questions.next();
+			String answer = it_answers.next();
+			String clean_question = clean_text(question);
+			String clean_answer = clean_text(answer);
+			if ((clean_question.replaceAll(" ","").length() > 0) && (clean_answer.replaceAll(" ","").length() > 0)) {
+				clean_questions.add(clean_question);
+				clean_answers.add(clean_answer);
+			}
+		}
 		questions = clean_questions;
 		answers = clean_answers;
+	}
+
+	// Check length of a string
+	private boolean checkLength(String str) {
+		int l = (str.split(" ")).length;
+		return ((min_length <= l) && (l <= max_length));
 	}
 
 	// Filter out the questions and answers that are too short or too long
 	private void lengthFilter() {
 		ArrayList<String> short_questions = new ArrayList<String> ();
 		ArrayList<String> short_answers = new ArrayList<String> ();
-		int i = 0;
-		int l = 0;
-		for (String q: questions) {
-			l = (q.split(" ")).length;
-			if ((min_length <= l) && (l <= max_length)) {
-				short_questions.add(q);
-				short_answers.add(answers.get(i));
+		Iterator<String> it_questions = questions.iterator();
+		Iterator<String> it_answers = answers.iterator();
+		while (it_questions.hasNext() && it_answers.hasNext()) {
+			String question = it_questions.next();
+			String answer = it_answers.next();
+			if (checkLength(question) && checkLength(answer)) {
+				short_questions.add(question);
+				short_answers.add(answer);
 			}
-			i++;
 		}
-		ArrayList<String> clean_questions = new ArrayList<String> ();
-		ArrayList<String> clean_answers = new ArrayList<String> ();
-		i = 0;
-		for (String a: short_answers) {
-			l = (a.split(" ")).length;
-			if ((min_length <= l) && (l <= max_length)) {
-				clean_answers.add(a);
-				clean_questions.add(short_questions.get(i));
-			}
-			i++;
-		}
-		questions = clean_questions;
-		answers = clean_answers;
+		questions = short_questions;
+		answers = short_answers;
 	}
 
 	// Tokenize
 	private String tokenize_sentence(String s) {
 		String ret = s;
-		int l = (s.split(" ")).length;
-		if (l < max_length) {
-			for (int i = 0; i < (max_length-l); i++) {
-				ret = ret + " <PAD>";
-			}
-		}
 		return "<START> " + ret + " <END>";
 	}
 	private ArrayList<String> tokenize_set(ArrayList<String> set) {
@@ -121,7 +145,7 @@ class Processer {
 
 	// Process everything
 	public void process() {
-		cleanQuestionsAnswers();
 		lengthFilter();
+		cleanQuestionsAnswers();
 	}
 }

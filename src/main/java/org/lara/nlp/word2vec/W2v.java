@@ -21,7 +21,7 @@ public class W2v {
 
 	// Constructor
 	public W2v(ArrayList<String> words, int minWordFrequency, int iterations, int epochs,
-		int dimension, double learningRate) {
+		int dimension) {
 		// Iterator
 		SentenceIterator iter = new CollectionSentenceIterator(words);
 		// Split on white spaces in the line to get words
@@ -32,11 +32,12 @@ public class W2v {
 			.iterations(iterations)
 			.epochs(epochs)
 			.layerSize(dimension) // the number of features in the word vector
-			.learningRate(learningRate)
 			.seed(40)
 			.windowSize(5) // rolling skip gram window size
 			.iterate(iter) // the input sentences
 			.tokenizerFactory(t) // the tokenizer
+			.batchSize(1024)
+			.workers(2)
 			.build();
 		vec.fit();
 	}
