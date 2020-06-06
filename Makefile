@@ -5,17 +5,13 @@
 CC          := protoc
 SRC         := message.proto
 
-PYTHON_OUT  := python/message_pb2.py
+PYTHON_OUT  := python/
 JAVA_OUT    := src/main/java/
 
-all: $(PYTHON_OUT) $(JAVA_OUT)
-
-$(PYTHON_OUT): $(SRC)
-	$(CC) $(SRC) --python_out=$(dir $@)
-
-$(JAVA_OUT): $(SRC)
-	$(CC) $(SRC) --java_out=$(dir $@)
+all:
+	$(CC) $(SRC) --python_out=$(PYTHON_OUT)
+	$(CC) $(SRC) --java_out=$(JAVA_OUT)
 
 clean:
-	$(RM) $(PYTHON_OUT)
-	$(RM) src/main/java/org/lara/rnn/Message.java
+	$(RM) $(PYTHON_OUT)/message_pb2.py
+	$(RM) $(JAVA_OUT)/org/lara/rnn/Message.java
