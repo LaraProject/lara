@@ -29,7 +29,7 @@ def load_length(length_file):
 	return int(data[0]), int(data[1])
 
 # Talking with our Chatbot
-def str_to_tokens(sentence : str ):
+def str_to_tokens( sentence : str, tokenizer, maxlen_questions):
 	words = sentence.lower().split()
 	tokens_list = list()
 	for word in words:
@@ -41,7 +41,7 @@ def str_to_tokens(sentence : str ):
 			maxlen=maxlen_questions, padding='post')
 
 def answer(question, enc_model, dec_model, tokenizer, maxlen_questions, maxlen_answers):
-	states_values = enc_model.predict(str_to_tokens(input('Enter question : ')))
+	states_values = enc_model.predict(str_to_tokens(question, tokenizer, maxlen_questions))
 	empty_target_seq = np.zeros((1, 1))
 	empty_target_seq[0, 0] = tokenizer.word_index['<start>']
 	stop_condition = False
