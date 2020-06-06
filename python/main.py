@@ -12,7 +12,7 @@ import numpy as np
 ## RNN part
 
 # Load the inference model
-def load_inference_model(enc_file, dec_file):
+def load_inference_models(enc_file, dec_file):
 	encoder_model = tf.keras.models.load_model(enc_file)
 	decoder_model = tf.keras.models.load_model(dec_file)
 	return (encoder_model, decoder_model)
