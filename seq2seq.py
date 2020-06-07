@@ -176,6 +176,8 @@ def create_embedding_matrix():
 # Create input and output datasets
 # encoder_input_data
 def create_input_output():
+	global maxlen_answers
+	global maxlen_questions
 	tokenized_questions = tokenizer.texts_to_sequences(questions)
 	maxlen_questions = max([len(x) for x in tokenized_questions])
 	padded_questions = preprocessing.sequence.pad_sequences(tokenized_questions,
