@@ -5,3 +5,5 @@ tensorflow
 protobuf
 argparse
 matplotlib
+gensim
+pyyaml

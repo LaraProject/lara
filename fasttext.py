@@ -15,12 +15,14 @@ class MyIter(object):
         yield sentence
         count += 1
 
-def train(aSize, aWindow, aMin_count, aWorkers, aEpochs, path):
+def train(aSize, aWindow, aMin_count, aWorkers, aEpochs, path, model_path):
   model = FastText(size=aSize, window=aWindow, min_count=aMin_count, workers=aWorkers)
   model.build_vocab(sentences=MyIter())
   total_examples = model.corpus_count
   model.train(sentences=MyIter(), total_examples=total_examples, epochs=aEpochs)
   model.wv.save_word2vec_format(path)
+  if len(model_path) > 0:
+    model.save(model_path)
 
 # Argument management
 argslist = argparse.ArgumentParser(description="FastText Word Vectors")
@@ -45,8 +47,11 @@ argslist.add_argument('--epochs', metavar='size', type=int,
 argslist.add_argument('--path', metavar='path', type=str,
     help='Specify the export path of the word vectors', default='fasttext_model_kv.txt', required=False)
 
+argslist.add_argument('--modelPath', metavar='path', type=str,
+    help='Specify the export path of the FastText model', default='', required=False)
+
 args = argslist.parse_args()
 
 print("Start training")
 data_path = args.data
-train(args.size, args.window, args.minCount, args.workers, args.epochs, args.path)
+train(args.size, args.window, args.minCount, args.workers, args.epochs, args.path, args.modelPath)
