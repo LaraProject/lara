@@ -25,18 +25,18 @@
                   <Button fx:id="exitButton" layoutX="22.0" layoutY="553.0" mnemonicParsing="false" onAction="#exitLara" text="Quitter LARA..." AnchorPane.bottomAnchor="20.0" />
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" onKeyPressed="#sendKeyPressed" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <SplitPane dividerPositions="0.8540268456375839" layoutX="101.0" layoutY="149.0" orientation="VERTICAL" prefHeight="598.0" prefWidth="697.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <TextArea fx:id="chatBox" layoutX="111.0" layoutY="153.0" prefHeight="505.0" prefWidth="695.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <VBox fx:id="chatBox" prefHeight="505.0" prefWidth="695.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <Button fx:id="sendButton" layoutX="563.0" layoutY="29.0" mnemonicParsing="false" onAction="#sendMessage" text="Envoyer" AnchorPane.bottomAnchor="29.0" AnchorPane.rightAnchor="60.0" />
+                              <Button fx:id="sendButton" layoutX="563.0" layoutY="29.0" mnemonicParsing="false" onAction="#sendMessage" onKeyPressed="#sendKeyPressed" text="Envoyer" AnchorPane.bottomAnchor="29.0" AnchorPane.rightAnchor="60.0" />
                               <TextField fx:id="messageInput" layoutX="32.0" layoutY="29.0" prefHeight="25.0" prefWidth="449.0" AnchorPane.bottomAnchor="29.0" AnchorPane.leftAnchor="32.0" />
                            </children>
                         </AnchorPane>

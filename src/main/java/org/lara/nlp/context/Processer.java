@@ -6,7 +6,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import emoji4j.EmojiUtils;
 
-class Processer {
+public class Processer {
 	// Structure
 	public ArrayList<String> questions;
 	public ArrayList<String> answers;
@@ -56,7 +56,7 @@ class Processer {
 	private static String clean_emoji(String text) {
 		return EmojiUtils.shortCodify(text);
 	}
-	private static String clean_text(String orig) {
+	public static String clean_text(String orig) {
 		// Convert to lower case
 		String text = orig.toLowerCase();
 		// Remove URLs
