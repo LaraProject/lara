@@ -60,7 +60,7 @@ def use_custom_data(path, size):
 	length_limit = 25
 	new_questions = []
 	new_answers = []
-	for i in range(len(questions)):
+	for i in range(min(len(questions), len(answers))):
 		if not((len(questions[i].split()) > length_limit) or (len(answers[i].split()) > length_limit+2)):
 			new_questions.append(questions[i])
 			new_answers.append(answers[i])
@@ -237,7 +237,7 @@ def create_model(encoder_input_data, decoder_input_data, decoder_output_data, us
 	output = decoder_dense(decoder_outputs)
 
 	model = tf.keras.models.Model([encoder_inputs, decoder_inputs], output)
-	model.compile(optimizer=tf.keras.optimizers.Adam(),
+	model.compile(optimizer=tf.keras.optimizers.Nadam(),
 				  loss='sparse_categorical_crossentropy')
 	model.summary()
 	return model, encoder_inputs, encoder_states, decoder_embedding, decoder_lstm, decoder_dense, decoder_inputs
