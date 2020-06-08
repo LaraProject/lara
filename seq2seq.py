@@ -241,7 +241,7 @@ def create_model(encoder_input_data, decoder_input_data, decoder_output_data, us
 	output = decoder_dense(decoder_outputs)
 
 	model = tf.keras.models.Model([encoder_inputs, decoder_inputs], output)
-	model.compile(optimizer=tf.keras.optimizers.Adam(),
+	model.compile(optimizer=tf.keras.optimizers.Nadam(),
 				  loss='sparse_categorical_crossentropy')
 	model.summary()
 	return model, encoder_inputs, encoder_states, decoder_embedding, decoder_lstm, decoder_dense, decoder_inputs
