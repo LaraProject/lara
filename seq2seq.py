@@ -14,6 +14,10 @@ import re
 from gensim.models import KeyedVectors
 import argparse
 from gensim.models import FastText
+from gensim.models.callbacks import CallbackAny2Vec
+
+class EpochLogger(CallbackAny2Vec):
+    pass
 
 # Global variables
 
