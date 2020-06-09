@@ -275,7 +275,7 @@ def save_inference_model(path, encoder_inputs, encoder_states, decoder_embedding
 # Save the tokenizer
 def save_tokenizer(path):
 	with open(path + '/tokenizer.pickle', 'wb') as handle:
-		pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
+		pickle.dump(tokenizer, handle, protocol=3)
 
 def save_length(path):
 	data = str(maxlen_questions) + "," + str(maxlen_answers)
